@@ -1,0 +1,23 @@
+service: aws-billing # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: python3.6
+  region: eu-west-1
+  iamRoleStatements:
+    -  Effect: "Allow"
+       Action:
+         - "ce:*"
+       Resource:
+         - "*"
+
+functions:
+  hello:
+    handler: handler.get_aws_monthly_billing_gbp
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: false
