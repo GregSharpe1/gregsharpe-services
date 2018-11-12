@@ -3,7 +3,7 @@ service: aws-billing # NOTE: update this with your service name
 provider:
   name: aws
   runtime: python3.6
-  region: eu-west-1
+  region: us-east-1
   iamRoleStatements:
     -  Effect: "Allow"
        Action:
@@ -13,11 +13,21 @@ provider:
 
 functions:
   hello:
-    handler: handler.get_aws_monthly_billing_gbp
+    handler: handler.set_lambda_return_format
+    events:
+      - http: GET /
 
 plugins:
   - serverless-python-requirements
+  - serverless-domain-manager
 
 custom:
   pythonRequirements:
     dockerizePip: false
+  domain_endpoint: "awsbilling.api.gregsharpe.co.uk"
+  customDomain:
+    domainName: aws.api.gregsharpe.co.uk
+    stage: dev
+    basePath: ''
+    certificateName: "api.gregsharpe.co.uk"
+    createRoute53Record: true

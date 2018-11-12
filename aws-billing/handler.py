@@ -52,10 +52,20 @@ def get_gbp_exchange_rate():
     response = response.json()
     return response['USD_GBP']['val']
 
-def get_aws_monthly_billing_gbp(event, context):
+def get_aws_monthly_billing_gbp():
     """
         Return the current months cost from the first
         of the current month in GBP
     """
 
     return float(get_aws_monthly_billing()) * get_gbp_exchange_rate()
+
+def set_lambda_return_format(event, context):
+    """
+        Lambda function response must return in the following format
+    """
+    return {
+      "isBase64Encoded": False,
+      "statusCode": 200,
+      "body": json.dumps({'value': get_aws_monthly_billing_gbp() })
+    }
